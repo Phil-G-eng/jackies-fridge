@@ -129,6 +129,7 @@
   .li-name { font-size:0.83rem; font-weight:500; color:var(--deep); }
   .li-meta { font-size:0.67rem; color:var(--teal); margin-top:2px; display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
   .badge { font-size:0.58rem; font-weight:700; padding:2px 7px; border-radius:8px; text-transform:uppercase; }
+  .b-meal{background:#fff3e0;color:#e65100}
   .b-fridge{background:#ddf4f0;color:#2a8fa8}
   .b-freezer{background:#d4eaf5;color:#1a6080}
   .b-drinks{background:#ffe8e8;color:#c04040}
@@ -284,12 +285,13 @@
       <div class="row">
         <div class="f1"><div class="field"><label>Category</label>
           <select id="iCat">
-            <option value="freezer">❄️ Freezer</option>
-            <option value="fridge">🥛 Fridge</option>
-            <option value="dairy">🧀 Dairy</option>
-            <option value="veg">🥦 Veg</option>
+            <option value="meal">🍲 Meal</option>
             <option value="meat">🥩 Meat</option>
+            <option value="veg">🥦 Veg</option>
+            <option value="dairy">🧀 Dairy</option>
             <option value="drinks">🥤 Drinks</option>
+            <option value="fridge">🥛 Fridge</option>
+            <option value="freezer">❄️ Freezer</option>
             <option value="other">📦 Other</option>
           </select>
         </div></div>
@@ -368,12 +370,13 @@
           <div class="f-sm"><div class="field"><label>Qty</label><input type="number" id="eQty" min="1" style="text-align:center"></div></div>
           <div class="f1"><div class="field"><label>Category</label>
             <select id="eCat">
-              <option value="freezer">❄️ Freezer</option>
-              <option value="fridge">🥛 Fridge</option>
-              <option value="dairy">🧀 Dairy</option>
-              <option value="veg">🥦 Veg</option>
+              <option value="meal">🍲 Meal</option>
               <option value="meat">🥩 Meat</option>
+              <option value="veg">🥦 Veg</option>
+              <option value="dairy">🧀 Dairy</option>
               <option value="drinks">🥤 Drinks</option>
+              <option value="fridge">🥛 Fridge</option>
+              <option value="freezer">❄️ Freezer</option>
               <option value="other">📦 Other</option>
             </select>
           </div></div>
@@ -420,7 +423,7 @@
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
-const EMOJIS = { fridge:'🥛', freezer:'❄️', dairy:'🧀', veg:'🥦', meat:'🥩', drinks:'🥤', other:'📦', default:'🥫' };
+const EMOJIS = { meal:'🍲', fridge:'🥛', freezer:'❄️', dairy:'🧀', veg:'🥦', meat:'🥩', drinks:'🥤', other:'📦', default:'🥫' };
 
 let SCRIPT_URL    = '';
 let items         = [];
@@ -503,8 +506,11 @@ async function apiGet() {
 }
 
 async function apiPost(payload) {
+  // Apps Script redirects POST requests — using no-cors avoids the CORS block.
+  // We can't read the response but the write still executes on the server.
   await fetch(SCRIPT_URL, {
-    method:'POST', redirect:'follow',
+    method:'POST',
+    mode:'no-cors',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify(payload)
   });
