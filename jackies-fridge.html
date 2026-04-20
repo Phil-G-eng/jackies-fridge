@@ -21,225 +21,198 @@
   body {
     font-family: 'DM Sans', sans-serif;
     background: linear-gradient(160deg, #0f2a38 0%, #1a4a5a 50%, #0d3040 100%);
-    min-height: 100vh;
-    color: var(--deep);
-    overflow-x: hidden;
-    padding-bottom: 50px;
+    min-height: 100vh; color: var(--deep);
+    overflow-x: hidden; padding-bottom: 50px;
   }
   body::before {
-    content: '';
-    position: fixed; inset: 0;
+    content: ''; position: fixed; inset: 0;
     background:
       radial-gradient(ellipse at 15% 50%, rgba(78,205,196,0.07) 0%, transparent 60%),
       radial-gradient(ellipse at 85% 20%, rgba(42,143,168,0.08) 0%, transparent 50%);
     pointer-events: none;
   }
 
-  /* ── SETUP SCREEN ─────────────────────────── */
-  #setupScreen {
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh; padding: 36px 18px 50px;
-  }
-  .setup-icon { font-size: 54px; margin-bottom: 10px; animation: float 4s ease-in-out infinite; }
+  /* ── SETUP ── */
+  #setupScreen { display:flex; flex-direction:column; align-items:center; min-height:100vh; padding:36px 18px 50px; }
+  .setup-icon { font-size:54px; margin-bottom:10px; animation:float 4s ease-in-out infinite; }
   @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-  .setup-title { font-family: 'Playfair Display', serif; font-size: 1.95rem; color: #fff; text-align: center; }
-  .setup-sub   { font-size: 0.7rem; color: var(--mint); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin: 4px 0 28px; }
+  .setup-title { font-family:'Playfair Display',serif; font-size:1.95rem; color:#fff; text-align:center; }
+  .setup-sub   { font-size:0.7rem; color:var(--mint); letter-spacing:3px; text-transform:uppercase; font-weight:600; margin:4px 0 28px; }
+  .setup-card  { background:var(--glass); backdrop-filter:blur(16px); border-radius:20px; padding:20px 18px; width:100%; max-width:420px; border:1px solid rgba(255,255,255,0.55); box-shadow:var(--shadow); margin-bottom:12px; }
+  .setup-card h3 { font-family:'Playfair Display',serif; font-size:1rem; color:var(--deep); margin-bottom:14px; }
+  .step { display:flex; gap:11px; margin-bottom:13px; align-items:flex-start; }
+  .step-num { min-width:24px; height:24px; background:linear-gradient(135deg,var(--teal),var(--mint)); color:#fff; border-radius:50%; font-size:0.7rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .step p { font-size:0.8rem; color:var(--deep); line-height:1.6; }
+  .step code { background:rgba(42,143,168,0.12); padding:1px 6px; border-radius:5px; font-size:0.74rem; color:var(--teal); font-family:monospace; }
+  .step a { color:var(--teal); font-weight:600; }
+  .field label { display:block; font-size:0.65rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--teal); margin-bottom:5px; }
+  input[type=text], input[type=number], select { width:100%; padding:11px 13px; border:1.5px solid rgba(42,143,168,0.22); border-radius:11px; font-family:'DM Sans',sans-serif; font-size:0.85rem; color:var(--deep); background:rgba(255,255,255,0.85); outline:none; transition:border-color 0.2s; -webkit-appearance:none; margin-bottom:10px; }
+  input:focus, select:focus { border-color:var(--teal); background:#fff; }
+  .btn { width:100%; padding:13px; background:linear-gradient(135deg,var(--teal),var(--mint)); color:#fff; border:none; border-radius:13px; font-family:'DM Sans',sans-serif; font-size:0.92rem; font-weight:600; cursor:pointer; box-shadow:0 5px 18px rgba(42,143,168,0.32); touch-action:manipulation; transition:all 0.2s; }
+  .btn:active { transform:scale(0.97); }
+  .err-box { font-size:0.75rem; color:var(--danger); background:rgba(232,93,93,0.1); border:1px solid rgba(232,93,93,0.25); border-radius:9px; padding:9px 12px; margin-top:6px; display:none; }
+  .err-box.show { display:block; }
 
-  .setup-card {
-    background: var(--glass); backdrop-filter: blur(16px);
-    border-radius: 20px; padding: 20px 18px;
-    width: 100%; max-width: 420px;
-    border: 1px solid rgba(255,255,255,0.55);
-    box-shadow: var(--shadow); margin-bottom: 12px;
-  }
-  .setup-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--deep); margin-bottom: 14px; }
+  /* ── MAIN APP ── */
+  #mainApp { display:none; }
+  .header { text-align:center; padding:26px 20px 12px; }
+  .fridge-icon { font-size:46px; display:block; filter:drop-shadow(0 4px 14px rgba(78,205,196,0.45)); animation:float 4s ease-in-out infinite; margin-bottom:4px; }
+  .header h1 { font-family:'Playfair Display',serif; font-size:1.85rem; color:#fff; letter-spacing:-0.5px; text-shadow:0 2px 20px rgba(78,205,196,0.35); }
+  .header .sub { font-size:0.7rem; color:var(--mint); letter-spacing:3px; text-transform:uppercase; font-weight:600; margin-top:2px; }
 
-  .step { display: flex; gap: 11px; margin-bottom: 13px; align-items: flex-start; }
-  .step-num { min-width: 24px; height: 24px; background: linear-gradient(135deg, var(--teal), var(--mint)); color: #fff; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-  .step p { font-size: 0.8rem; color: var(--deep); line-height: 1.6; }
-  .step code { background: rgba(42,143,168,0.12); padding: 1px 6px; border-radius: 5px; font-size: 0.74rem; color: var(--teal); font-family: monospace; }
-  .step strong { font-weight: 600; }
-  .step a { color: var(--teal); font-weight: 600; }
-
-  .field label { display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); margin-bottom: 5px; }
-  input[type=text], input[type=number], select {
-    width: 100%; padding: 11px 13px;
-    border: 1.5px solid rgba(42,143,168,0.22); border-radius: 11px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--deep);
-    background: rgba(255,255,255,0.85); outline: none;
-    transition: border-color 0.2s; -webkit-appearance: none; margin-bottom: 10px;
-  }
-  input:focus, select:focus { border-color: var(--teal); background: #fff; }
-
-  .btn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--teal), var(--mint)); color: #fff; border: none; border-radius: 13px; font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600; cursor: pointer; box-shadow: 0 5px 18px rgba(42,143,168,0.32); touch-action: manipulation; transition: all 0.2s; }
-  .btn:active { transform: scale(0.97); }
-
-  .err-box { font-size: 0.75rem; color: var(--danger); background: rgba(232,93,93,0.1); border: 1px solid rgba(232,93,93,0.25); border-radius: 9px; padding: 9px 12px; margin-top: 6px; display: none; }
-  .err-box.show { display: block; }
-
-  /* ── MAIN APP ──────────────────────────────── */
-  #mainApp { display: none; }
-
-  .header { text-align: center; padding: 26px 20px 12px; }
-  .fridge-icon { font-size: 46px; display: block; filter: drop-shadow(0 4px 14px rgba(78,205,196,0.45)); animation: float 4s ease-in-out infinite; margin-bottom: 4px; }
-  .header h1 { font-family: 'Playfair Display', serif; font-size: 1.85rem; color: #fff; letter-spacing: -0.5px; text-shadow: 0 2px 20px rgba(78,205,196,0.35); }
-  .header .sub { font-size: 0.7rem; color: var(--mint); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-top: 2px; }
-
-  /* SYNC STATUS */
-  .sync-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
-  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #888; transition: background 0.3s; flex-shrink: 0; }
-  .sync-dot.green  { background: var(--mint); box-shadow: 0 0 6px rgba(78,205,196,0.6); }
-  .sync-dot.orange { background: var(--warn); }
-  .sync-dot.red    { background: var(--danger); }
-  .sync-label { font-size: 0.7rem; color: rgba(255,255,255,0.55); font-weight: 500; }
-  .refresh-btn { font-size: 0.7rem; color: var(--mint); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; touch-action: manipulation; }
+  .sync-bar { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:12px; }
+  .sync-dot { width:7px; height:7px; border-radius:50%; background:#888; transition:background 0.3s; flex-shrink:0; }
+  .sync-dot.green  { background:var(--mint); box-shadow:0 0 6px rgba(78,205,196,0.6); }
+  .sync-dot.red    { background:var(--danger); }
+  .sync-label { font-size:0.7rem; color:rgba(255,255,255,0.55); font-weight:500; }
+  .refresh-btn { font-size:0.7rem; color:var(--mint); background:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; touch-action:manipulation; }
 
   /* TABS */
-  .tabs { display: flex; gap: 7px; justify-content: center; padding: 0 14px 14px; flex-wrap: wrap; }
-  .tab { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.13); border-radius: 30px; padding: 7px 15px; font-size: 0.78rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.22s; font-weight: 500; touch-action: manipulation; }
-  .tab.active { background: var(--mint); color: var(--deep); border-color: var(--mint); box-shadow: 0 4px 14px rgba(78,205,196,0.28); }
+  .tabs { display:flex; gap:7px; justify-content:center; padding:0 14px 14px; flex-wrap:wrap; }
+  .tab { background:rgba(255,255,255,0.09); color:rgba(255,255,255,0.65); border:1px solid rgba(255,255,255,0.13); border-radius:30px; padding:7px 15px; font-size:0.78rem; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.22s; font-weight:500; touch-action:manipulation; }
+  .tab.active { background:var(--mint); color:var(--deep); border-color:var(--mint); box-shadow:0 4px 14px rgba(78,205,196,0.28); }
 
   /* FRIDGE BODY */
-  .fridge-wrap { display: flex; justify-content: center; padding: 0 12px 18px; }
-  .fridge-body { width: 100%; max-width: 400px; background: linear-gradient(160deg, #cde8f0 0%, #b8dce9 60%, #a8cfde 100%); border-radius: 26px 26px 20px 20px; box-shadow: 0 24px 64px rgba(0,0,0,0.45), inset 0 2px 0 rgba(255,255,255,0.65), inset 0 -3px 0 rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.48); overflow: hidden; position: relative; }
-  .brand { position: absolute; top: 13px; right: 16px; background: linear-gradient(135deg, #2a8fa8, #1a607a); color: #fff; font-family: 'Playfair Display', serif; font-size: 0.67rem; letter-spacing: 2.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 5px; z-index: 4; }
+  .fridge-wrap { display:flex; justify-content:center; padding:0 12px 18px; }
+  .fridge-body { width:100%; max-width:400px; background:linear-gradient(160deg,#cde8f0 0%,#b8dce9 60%,#a8cfde 100%); border-radius:26px 26px 20px 20px; box-shadow:0 24px 64px rgba(0,0,0,0.45), inset 0 2px 0 rgba(255,255,255,0.65), inset 0 -3px 0 rgba(0,0,0,0.1); border:2px solid rgba(255,255,255,0.48); overflow:hidden; position:relative; }
+  .brand { position:absolute; top:13px; right:16px; background:linear-gradient(135deg,#2a8fa8,#1a607a); color:#fff; font-family:'Playfair Display',serif; font-size:0.67rem; letter-spacing:2.5px; text-transform:uppercase; padding:4px 10px; border-radius:5px; z-index:4; }
 
-  .compartment { margin: 13px 13px 5px; border-radius: 15px; padding: 11px 12px 13px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.07), inset 0 -1px 0 rgba(255,255,255,0.7); }
-  .comp-fridge  { background: linear-gradient(180deg, #eaf7fc 0%, #dbf1f9 100%); min-height: 100px; }
-  .comp-freezer { background: linear-gradient(180deg, #cde6f6 0%, #b8d8ee 100%); min-height: 75px; margin-top: 5px; }
-  .comp-label { font-size: 0.61rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 9px; display: flex; align-items: center; gap: 5px; }
-  .shelf { height: 2px; background: linear-gradient(90deg,transparent,rgba(42,143,168,0.25),rgba(42,143,168,0.45),rgba(42,143,168,0.25),transparent); margin: 7px 0; border-radius: 1px; }
+  /* FRIDGE SECTION — 4 shelves */
+  .comp { margin:13px 13px 5px; border-radius:15px; padding:11px 12px 13px; box-shadow:inset 0 2px 8px rgba(0,0,0,0.07), inset 0 -1px 0 rgba(255,255,255,0.7); }
+  .comp-fridge  { background:linear-gradient(180deg,#eaf7fc 0%,#dbf1f9 100%); }
+  .comp-freezer { background:linear-gradient(180deg,#cde6f6 0%,#b8d8ee 100%); margin-top:5px; }
+  .comp-label { font-size:0.61rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--teal); margin-bottom:6px; display:flex; align-items:center; gap:5px; }
 
-  .chip-grid { display: flex; flex-wrap: wrap; gap: 5px; min-height: 32px; }
-  .chip { background: rgba(255,255,255,0.8); border: 1px solid rgba(42,143,168,0.18); border-radius: 20px; padding: 5px 9px 5px 7px; font-size: 0.73rem; font-weight: 500; color: var(--deep); display: flex; align-items: center; gap: 4px; cursor: pointer; touch-action: manipulation; animation: pop 0.25s cubic-bezier(0.175,0.885,0.32,1.275); }
+  /* shelf rows (fridge) */
+  .shelf-row { border-bottom:2px solid rgba(42,143,168,0.2); padding:6px 0 8px; margin-bottom:2px; }
+  .shelf-row:last-child { border-bottom:none; margin-bottom:0; }
+  .row-label { font-size:0.57rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(42,143,168,0.5); margin-bottom:5px; }
+
+  /* drawer rows (freezer) */
+  .drawer-row { background:rgba(255,255,255,0.25); border-radius:10px; padding:8px 10px; margin-bottom:6px; cursor:pointer; transition:background 0.18s; touch-action:manipulation; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.35); }
+  .drawer-row:last-child { margin-bottom:0; }
+  .drawer-row:active { background:rgba(255,255,255,0.45); }
+  .drawer-row-label { font-size:0.75rem; font-weight:600; color:var(--deep); }
+  .drawer-row-badge { background:var(--teal); color:#fff; border-radius:10px; padding:2px 8px; font-size:0.65rem; font-weight:700; }
+
+  /* bottom drawers strip */
+  .bottom-drawers { margin:5px 13px 14px; display:flex; flex-direction:column; gap:0; }
+
+  .chip-grid { display:flex; flex-wrap:wrap; gap:5px; min-height:28px; }
+  .chip { background:rgba(255,255,255,0.82); border:1px solid rgba(42,143,168,0.18); border-radius:20px; padding:5px 9px 5px 7px; font-size:0.73rem; font-weight:500; color:var(--deep); display:flex; align-items:center; gap:4px; cursor:pointer; touch-action:manipulation; animation:pop 0.25s cubic-bezier(0.175,0.885,0.32,1.275); }
   @keyframes pop { from{opacity:0;transform:scale(0.6)} to{opacity:1;transform:scale(1)} }
-  .chip:active { transform: scale(0.94); }
-  .chip-qty { background: var(--teal); color: #fff; border-radius: 8px; padding: 1px 5px; font-size: 0.62rem; font-weight: 700; min-width: 17px; text-align: center; }
-  .empty-msg { font-size: 0.72rem; color: rgba(26,58,74,0.36); font-style: italic; padding: 5px 0; }
-
-  .drawers { margin: 5px 13px 14px; display: flex; flex-direction: column; gap: 6px; }
-  .drawer-btn { background: linear-gradient(135deg, #b8dce8, #a8cedf); border-radius: 12px; padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.42); box-shadow: 0 2px 8px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.5); transition: transform 0.18s; touch-action: manipulation; }
-  .drawer-btn:active { transform: translateX(3px); }
-  .drawer-btn span { font-size: 0.77rem; font-weight: 600; color: var(--deep); }
-  .drawer-badge { background: var(--teal); color: #fff; border-radius: 12px; padding: 2px 9px; font-size: 0.67rem; font-weight: 700; }
+  .chip:active { transform:scale(0.94); }
+  .chip-qty { background:var(--teal); color:#fff; border-radius:8px; padding:1px 5px; font-size:0.62rem; font-weight:700; min-width:17px; text-align:center; }
+  .empty-msg { font-size:0.7rem; color:rgba(26,58,74,0.32); font-style:italic; padding:3px 0; }
 
   /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; max-width: 400px; margin: 0 auto 14px; padding: 0 12px; }
-  .stat { background: var(--glass); backdrop-filter: blur(14px); border-radius: 15px; padding: 13px 8px; text-align: center; border: 1px solid rgba(255,255,255,0.48); box-shadow: var(--shadow); }
-  .stat-n { font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--deep); line-height: 1; }
-  .stat-l { font-size: 0.6rem; color: var(--teal); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:400px; margin:0 auto 14px; padding:0 12px; }
+  .stat { background:var(--glass); backdrop-filter:blur(14px); border-radius:15px; padding:13px 8px; text-align:center; border:1px solid rgba(255,255,255,0.48); box-shadow:var(--shadow); }
+  .stat-n { font-family:'Playfair Display',serif; font-size:1.55rem; color:var(--deep); line-height:1; }
+  .stat-l { font-size:0.6rem; color:var(--teal); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
 
-  /* PANEL / CARDS */
-  .panel { max-width: 400px; margin: 0 auto; padding: 0 12px 30px; display: flex; flex-direction: column; gap: 12px; }
-  .card { background: var(--glass); backdrop-filter: blur(16px); border-radius: 20px; padding: 18px; border: 1px solid rgba(255,255,255,0.52); box-shadow: var(--shadow); }
-  .card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--deep); margin-bottom: 13px; }
-  .row { display: flex; gap: 8px; margin-bottom: 8px; }
-  .f1 { flex: 1; } .f2 { flex: 2; } .f-sm { flex: 0 0 68px; }
+  /* PANEL */
+  .panel { max-width:400px; margin:0 auto; padding:0 12px 30px; display:flex; flex-direction:column; gap:12px; }
+  .card { background:var(--glass); backdrop-filter:blur(16px); border-radius:20px; padding:18px; border:1px solid rgba(255,255,255,0.52); box-shadow:var(--shadow); }
+  .card h3 { font-family:'Playfair Display',serif; font-size:1rem; color:var(--deep); margin-bottom:13px; }
+  .row { display:flex; gap:8px; margin-bottom:8px; }
+  .f1{flex:1} .f2{flex:2} .f-sm{flex:0 0 68px}
 
   /* LIST */
-  .list-head { padding: 14px 18px 0; display: flex; justify-content: space-between; align-items: center; }
-  .list-head h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--deep); }
-  .list-count { font-size: 0.7rem; color: var(--teal); font-weight: 600; }
-  .search-bar { width: 100%; padding: 9px 14px; border: none; border-top: 1px solid rgba(42,143,168,0.1); border-bottom: 1px solid rgba(42,143,168,0.1); background: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--deep); outline: none; margin-top: 10px; }
-  .list-item { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-top: 1px solid rgba(42,143,168,0.07); }
-  .li-icon { font-size: 1.1rem; min-width: 22px; }
-  .li-info { flex: 1; }
-  .li-name { font-size: 0.83rem; font-weight: 500; color: var(--deep); }
-  .li-meta { font-size: 0.67rem; color: var(--teal); margin-top: 2px; display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
-  .badge { font-size: 0.58rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; text-transform: uppercase; }
-  .b-fridge    { background:#ddf4f0; color:#2a8fa8; }
-  .b-freezer   { background:#d4eaf5; color:#1a6080; }
-  .b-leftovers { background:#fff0dd; color:#c07000; }
-  .b-drinks    { background:#ffe8e8; color:#c04040; }
-  .b-dairy     { background:#f0f4ff; color:#4060c0; }
-  .b-veg       { background:#e8f8e8; color:#2a802a; }
-  .li-actions { display: flex; align-items: center; gap: 4px; }
-  .qbtn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid rgba(42,143,168,0.28); background: #fff; color: var(--teal); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; touch-action: manipulation; line-height: 1; transition: all 0.15s; }
-  .qbtn:active { background: var(--teal); color: #fff; }
-  .qval { font-size: 0.82rem; font-weight: 700; color: var(--deep); min-width: 22px; text-align: center; }
-  .del-btn { background: none; border: none; color: rgba(232,93,93,0.4); font-size: 1rem; cursor: pointer; padding: 3px 5px; touch-action: manipulation; }
-  .del-btn:active { color: var(--danger); }
+  .list-head { padding:14px 18px 0; display:flex; justify-content:space-between; align-items:center; }
+  .list-head h3 { font-family:'Playfair Display',serif; font-size:1rem; color:var(--deep); }
+  .list-count { font-size:0.7rem; color:var(--teal); font-weight:600; }
+  .search-bar { width:100%; padding:9px 14px; border:none; border-top:1px solid rgba(42,143,168,0.1); border-bottom:1px solid rgba(42,143,168,0.1); background:rgba(255,255,255,0.5); font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--deep); outline:none; margin-top:10px; }
+  .list-item { display:flex; align-items:center; gap:10px; padding:11px 16px; border-top:1px solid rgba(42,143,168,0.07); }
+  .li-icon { font-size:1.1rem; min-width:22px; }
+  .li-info { flex:1; }
+  .li-name { font-size:0.83rem; font-weight:500; color:var(--deep); }
+  .li-meta { font-size:0.67rem; color:var(--teal); margin-top:2px; display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
+  .badge { font-size:0.58rem; font-weight:700; padding:2px 7px; border-radius:8px; text-transform:uppercase; }
+  .b-fridge{background:#ddf4f0;color:#2a8fa8}
+  .b-freezer{background:#d4eaf5;color:#1a6080}
+  .b-drinks{background:#ffe8e8;color:#c04040}
+  .b-dairy{background:#f0f4ff;color:#4060c0}
+  .b-veg{background:#e8f8e8;color:#2a802a}
+  .b-meat{background:#fdecea;color:#b03020}
+  .b-other{background:#f5f5f5;color:#606060}
+  .li-actions { display:flex; align-items:center; gap:4px; }
+  .qbtn { width:28px; height:28px; border-radius:50%; border:1.5px solid rgba(42,143,168,0.28); background:#fff; color:var(--teal); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:700; touch-action:manipulation; line-height:1; }
+  .qbtn:active { background:var(--teal); color:#fff; }
+  .qval { font-size:0.82rem; font-weight:700; color:var(--deep); min-width:22px; text-align:center; }
+  .edit-btn { background:none; border:none; font-size:1rem; cursor:pointer; padding:3px 4px; touch-action:manipulation; color:rgba(42,143,168,0.6); }
+  .del-btn  { background:none; border:none; font-size:1rem; cursor:pointer; padding:3px 4px; touch-action:manipulation; color:rgba(232,93,93,0.4); }
 
   /* SPINNER */
-  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  .spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:6px; }
   @keyframes spin { to{transform:rotate(360deg)} }
 
   /* MODAL */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(10,30,42,0.72); backdrop-filter: blur(5px); z-index: 200; align-items: flex-end; justify-content: center; }
-  .overlay.open { display: flex; }
-  .modal { background: #fdf9f0; width: 100%; max-width: 480px; border-radius: 24px 24px 0 0; padding: 0 0 44px; animation: slideUp 0.3s ease; max-height: 80vh; display: flex; flex-direction: column; }
+  .overlay { display:none; position:fixed; inset:0; background:rgba(10,30,42,0.72); backdrop-filter:blur(5px); z-index:200; align-items:flex-end; justify-content:center; }
+  .overlay.open { display:flex; }
+  .modal { background:#fdf9f0; width:100%; max-width:480px; border-radius:24px 24px 0 0; padding:0 0 44px; animation:slideUp 0.3s ease; max-height:85vh; display:flex; flex-direction:column; }
   @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-  .modal-top { padding: 16px 20px 12px; border-bottom: 1px solid rgba(42,143,168,0.1); }
-  .modal-handle { width: 38px; height: 4px; background: rgba(26,58,74,0.14); border-radius: 2px; margin: 0 auto 14px; }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--deep); text-align: center; }
-  .modal-body { overflow-y: auto; flex: 1; }
-  .modal-empty { padding: 24px; text-align: center; font-size: 0.82rem; color: rgba(26,58,74,0.4); font-style: italic; }
-  .modal-close { display: block; margin: 14px 20px 0; padding: 11px; background: var(--deep); color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; width: calc(100% - 40px); touch-action: manipulation; }
+  .modal-top { padding:16px 20px 12px; border-bottom:1px solid rgba(42,143,168,0.1); flex-shrink:0; }
+  .modal-handle { width:38px; height:4px; background:rgba(26,58,74,0.14); border-radius:2px; margin:0 auto 14px; }
+  .modal-title { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--deep); text-align:center; }
+  .modal-body { overflow-y:auto; flex:1; }
+  .modal-empty { padding:24px; text-align:center; font-size:0.82rem; color:rgba(26,58,74,0.4); font-style:italic; }
+  .modal-close { display:block; margin:14px 20px 0; padding:11px; background:var(--deep); color:#fff; border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:600; cursor:pointer; width:calc(100% - 40px); touch-action:manipulation; flex-shrink:0; }
+
+  /* EDIT MODAL */
+  .edit-body { padding:18px 20px; }
+  .edit-body .field { margin-bottom:10px; }
+  .edit-body input, .edit-body select { margin-bottom:0; }
+  .edit-actions { display:flex; gap:10px; margin-top:14px; }
+  .edit-actions .btn { flex:1; padding:11px; font-size:0.85rem; }
+  .btn-cancel { background:rgba(26,58,74,0.1); color:var(--deep); box-shadow:none; }
 
   /* TOAST */
-  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(90px); background: var(--deep); color: #fff; padding: 10px 22px; border-radius: 24px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.32); transition: transform 0.32s cubic-bezier(0.175,0.885,0.32,1.275); z-index: 999; white-space: nowrap; }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(90px); background:var(--deep); color:#fff; padding:10px 22px; border-radius:24px; font-size:0.82rem; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,0.32); transition:transform 0.32s cubic-bezier(0.175,0.885,0.32,1.275); z-index:999; white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
 
-  .settings-link { text-align: center; margin-top: 6px; }
-  .settings-link button { background: none; border: none; color: rgba(255,255,255,0.28); font-size: 0.68rem; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .settings-link { text-align:center; margin-top:6px; }
+  .settings-link button { background:none; border:none; color:rgba(255,255,255,0.28); font-size:0.68rem; font-family:'DM Sans',sans-serif; cursor:pointer; }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     SETUP SCREEN
-══════════════════════════════════════ -->
+<!-- ══════════════════════ SETUP ══════════════════════ -->
 <div id="setupScreen">
   <div class="setup-icon">🧊</div>
   <div class="setup-title">Jackie's Fridge</div>
   <div class="setup-sub">First-time Setup</div>
 
   <div class="setup-card">
-    <h3>Step 1 — Create the Google Sheet</h3>
+    <h3>Connect to Google Sheets</h3>
     <div class="step">
       <div class="step-num">1</div>
-      <p>Go to <a href="https://sheets.google.com" target="_blank">sheets.google.com</a> and create a new blank spreadsheet. Name it <strong>Fridge Stock</strong>.</p>
+      <p>Go to <a href="https://sheets.google.com" target="_blank">sheets.google.com</a> — create a blank sheet named <strong>Fridge Stock</strong>. In Row 1 add these headers:<br>
+      <code>id</code> <code>name</code> <code>category</code> <code>zone</code> <code>position</code> <code>qty</code></p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <p>In Row 1, type these six headers exactly as shown, one per column:<br>
-      <code>id</code> &nbsp; <code>name</code> &nbsp; <code>category</code> &nbsp; <code>zone</code> &nbsp; <code>drawer</code> &nbsp; <code>qty</code></p>
+      <p>Go to <strong>Extensions → Apps Script</strong>. Delete the default code, paste in the <strong>fridge-apps-script.gs</strong> contents and save.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <p>In the menu bar go to <strong>Extensions → Apps Script</strong>. A new tab opens.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <p>Delete all the default code in the editor. Open the <strong>fridge-apps-script.gs</strong> file you downloaded, copy everything, and paste it into the Apps Script editor. Click the <strong>💾 Save</strong> icon.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <p>Click <strong>Deploy → New deployment</strong>. Under <em>Select type</em> choose <strong>Web app</strong>. Set <em>Execute as</em> to <strong>Me</strong> and <em>Who has access</em> to <strong>Anyone</strong>. Click <strong>Deploy</strong> and authorise when asked.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">6</div>
-      <p>Copy the <strong>Web app URL</strong> that appears (it starts with <code>https://script.google.com/macros/s/…</code>) and paste it below.</p>
+      <p>Click <strong>Deploy → New deployment → Web app</strong>. Set <em>Execute as</em> <strong>Me</strong> and <em>Who has access</em> <strong>Anyone</strong>. Deploy, authorise, copy the URL.</p>
     </div>
   </div>
 
   <div class="setup-card">
-    <h3>Step 2 — Connect this app</h3>
+    <h3>Paste your Web App URL</h3>
     <div class="field">
       <label>Web App URL</label>
       <input type="text" id="cfgUrl" placeholder="https://script.google.com/macros/s/…/exec">
     </div>
-    <div class="err-box" id="setupErr">Could not reach that URL — double-check it was deployed with <strong>Anyone</strong> access and try again.</div>
-    <button class="btn" onclick="connectSheets()">
-      <span id="connectLabel">Connect &amp; Open Fridge ❄️</span>
-    </button>
-    <p style="font-size:0.69rem;color:rgba(26,58,74,0.45);text-align:center;margin-top:10px">The URL is stored only on this device. Repeat on each family phone/tablet.</p>
+    <div class="err-box" id="setupErr">Could not connect — check the URL was deployed with <strong>Anyone</strong> access.</div>
+    <button class="btn" onclick="connectSheets()"><span id="connectLabel">Connect &amp; Open Fridge ❄️</span></button>
+    <p style="font-size:0.69rem;color:rgba(26,58,74,0.45);text-align:center;margin-top:10px">URL stored on this device only. Repeat on each family device.</p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     MAIN APP
-══════════════════════════════════════ -->
+<!-- ══════════════════════ MAIN APP ══════════════════════ -->
 <div id="mainApp">
 
   <div class="header">
@@ -255,40 +228,41 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="setFilter('all',this)">All</button>
     <button class="tab" onclick="setFilter('fridge',this)">🥛 Fridge</button>
-    <button class="tab" onclick="setFilter('freezer',this)">❄️ Freezer</button>
-    <button class="tab" onclick="setFilter('leftovers',this)">🍲 Leftovers</button>
-    <button class="tab" onclick="setFilter('drawers',this)">📦 Drawers</button>
+    <button class="tab active" onclick="setFilter('freezer',this)">❄️ Freezer</button>
+    <button class="tab" onclick="setFilter('all',this)">All</button>
   </div>
 
   <div class="fridge-wrap">
     <div class="fridge-body">
       <div class="brand">FrostPro</div>
-      <div class="compartment comp-fridge">
+
+      <!-- FRIDGE: shelves 1–4 -->
+      <div class="comp comp-fridge">
         <div class="comp-label"><span>🥛</span> Fridge</div>
-        <div class="shelf"></div>
-        <div class="chip-grid" id="fridgeChips"></div>
-        <div class="shelf"></div>
+        <div class="shelf-row"><div class="row-label">Shelf 1</div><div class="chip-grid" id="f-s1"></div></div>
+        <div class="shelf-row"><div class="row-label">Shelf 2</div><div class="chip-grid" id="f-s2"></div></div>
+        <div class="shelf-row"><div class="row-label">Shelf 3</div><div class="chip-grid" id="f-s3"></div></div>
+        <div class="shelf-row"><div class="row-label">Shelf 4</div><div class="chip-grid" id="f-s4"></div></div>
       </div>
-      <div class="compartment comp-freezer">
+
+      <!-- FREEZER: drawers 1–3 -->
+      <div class="comp comp-freezer">
         <div class="comp-label"><span>❄️</span> Freezer</div>
-        <div class="chip-grid" id="freezerChips"></div>
-      </div>
-      <div class="drawers">
-        <div class="drawer-btn" onclick="openDrawer(1)">
-          <span>📦 Drawer 1 — Veg &amp; Fresh</span>
-          <div class="drawer-badge" id="d1c">0</div>
+        <div class="drawer-row" onclick="openDrawerModal('freezer',1)">
+          <span class="drawer-row-label">📦 Drawer 1</span>
+          <span class="drawer-row-badge" id="fz-d1">0</span>
         </div>
-        <div class="drawer-btn" onclick="openDrawer(2)">
-          <span>📦 Drawer 2 — Deli &amp; Cheese</span>
-          <div class="drawer-badge" id="d2c">0</div>
+        <div class="drawer-row" onclick="openDrawerModal('freezer',2)">
+          <span class="drawer-row-label">📦 Drawer 2</span>
+          <span class="drawer-row-badge" id="fz-d2">0</span>
         </div>
-        <div class="drawer-btn" onclick="openDrawer(3)">
-          <span>📦 Drawer 3 — Leftovers &amp; Meals</span>
-          <div class="drawer-badge" id="d3c">0</div>
+        <div class="drawer-row" onclick="openDrawerModal('freezer',3)">
+          <span class="drawer-row-label">📦 Drawer 3</span>
+          <span class="drawer-row-badge" id="fz-d3">0</span>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -299,6 +273,8 @@
   </div>
 
   <div class="panel">
+
+    <!-- ADD ITEM -->
     <div class="card">
       <h3>➕ Add Item</h3>
       <div class="row">
@@ -308,34 +284,47 @@
       <div class="row">
         <div class="f1"><div class="field"><label>Category</label>
           <select id="iCat">
-            <option value="fridge">🥛 Fridge</option>
             <option value="freezer">❄️ Freezer</option>
-            <option value="leftovers">🍲 Leftovers</option>
+            <option value="fridge">🥛 Fridge</option>
             <option value="dairy">🧀 Dairy</option>
             <option value="veg">🥦 Veg</option>
+            <option value="meat">🥩 Meat</option>
             <option value="drinks">🥤 Drinks</option>
+            <option value="other">📦 Other</option>
           </select>
         </div></div>
         <div class="f1"><div class="field"><label>Zone</label>
-          <select id="iZone">
-            <option value="fridge">Fridge</option>
+          <select id="iZone" onchange="updateAddForm()">
             <option value="freezer">Freezer</option>
+            <option value="fridge">Fridge</option>
           </select>
         </div></div>
       </div>
-      <div class="row">
-        <div class="f1"><div class="field"><label>Drawer (optional)</label>
+      <!-- Fridge: shelf selector -->
+      <div class="row" id="addShelfRow" style="display:none">
+        <div class="f1"><div class="field"><label>Shelf</label>
+          <select id="iShelf">
+            <option value="1">Shelf 1</option>
+            <option value="2">Shelf 2</option>
+            <option value="3">Shelf 3</option>
+            <option value="4">Shelf 4</option>
+          </select>
+        </div></div>
+      </div>
+      <!-- Freezer: drawer selector -->
+      <div class="row" id="addDrawerRow">
+        <div class="f1"><div class="field"><label>Drawer</label>
           <select id="iDrawer">
-            <option value="">None</option>
-            <option value="1">Drawer 1 — Veg</option>
-            <option value="2">Drawer 2 — Deli</option>
-            <option value="3">Drawer 3 — Leftovers</option>
+            <option value="1">Drawer 1</option>
+            <option value="2">Drawer 2</option>
+            <option value="3">Drawer 3</option>
           </select>
         </div></div>
       </div>
       <button class="btn" id="addBtn" onclick="addItem()">Add to Fridge ❄️</button>
     </div>
 
+    <!-- FULL LIST -->
     <div class="card" style="padding:0;overflow:hidden">
       <div class="list-head">
         <h3>All Contents</h3>
@@ -350,180 +339,252 @@
     <button onclick="resetSetup()">⚙ Change Web App URL</button>
   </div>
 
-</div><!-- /mainApp -->
+</div>
 
-<!-- DRAWER MODAL -->
-<div class="overlay" id="drawerOverlay" onclick="maybeClose(event)">
+<!-- DRAWER CONTENTS MODAL -->
+<div class="overlay" id="drawerOverlay" onclick="maybeClose(event,'drawerOverlay')">
   <div class="modal">
     <div class="modal-top">
       <div class="modal-handle"></div>
-      <div class="modal-title" id="modalTitle">Drawer</div>
+      <div class="modal-title" id="drawerModalTitle">Drawer</div>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-    <button class="modal-close" onclick="closeModal()">Close</button>
+    <div class="modal-body" id="drawerModalBody"></div>
+    <button class="modal-close" onclick="closeOverlay('drawerOverlay')">Close</button>
+  </div>
+</div>
+
+<!-- EDIT ITEM MODAL -->
+<div class="overlay" id="editOverlay" onclick="maybeClose(event,'editOverlay')">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Edit Item</div>
+    </div>
+    <div class="modal-body">
+      <div class="edit-body">
+        <input type="hidden" id="eId">
+        <div class="field"><label>Item Name</label><input type="text" id="eName"></div>
+        <div class="row">
+          <div class="f-sm"><div class="field"><label>Qty</label><input type="number" id="eQty" min="1" style="text-align:center"></div></div>
+          <div class="f1"><div class="field"><label>Category</label>
+            <select id="eCat">
+              <option value="freezer">❄️ Freezer</option>
+              <option value="fridge">🥛 Fridge</option>
+              <option value="dairy">🧀 Dairy</option>
+              <option value="veg">🥦 Veg</option>
+              <option value="meat">🥩 Meat</option>
+              <option value="drinks">🥤 Drinks</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div></div>
+        </div>
+        <div class="row">
+          <div class="f1"><div class="field"><label>Zone</label>
+            <select id="eZone" onchange="updateEditForm()">
+              <option value="freezer">Freezer</option>
+              <option value="fridge">Fridge</option>
+            </select>
+          </div></div>
+        </div>
+        <div class="row" id="eShelfRow" style="display:none">
+          <div class="f1"><div class="field"><label>Shelf</label>
+            <select id="eShelf">
+              <option value="1">Shelf 1</option>
+              <option value="2">Shelf 2</option>
+              <option value="3">Shelf 3</option>
+              <option value="4">Shelf 4</option>
+            </select>
+          </div></div>
+        </div>
+        <div class="row" id="eDrawerRow">
+          <div class="f1"><div class="field"><label>Drawer</label>
+            <select id="eDrawer">
+              <option value="1">Drawer 1</option>
+              <option value="2">Drawer 2</option>
+              <option value="3">Drawer 3</option>
+            </select>
+          </div></div>
+        </div>
+        <div class="edit-actions">
+          <button class="btn btn-cancel" onclick="closeOverlay('editOverlay')">Cancel</button>
+          <button class="btn" onclick="saveEdit()">Save Changes</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  CONSTANTS
-// ═══════════════════════════════════════════════
-const EMOJIS = { fridge:'🥛', freezer:'❄️', leftovers:'🍲', dairy:'🧀', veg:'🥦', drinks:'🥤', default:'🥫' };
-const DRAWER_NAMES = { 1:'Veg & Fresh', 2:'Deli & Cheese', 3:'Leftovers & Meals' };
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
+const EMOJIS = { fridge:'🥛', freezer:'❄️', dairy:'🧀', veg:'🥦', meat:'🥩', drinks:'🥤', other:'📦', default:'🥫' };
 
-let SCRIPT_URL   = '';
-let items        = [];
-let currentFilter = 'all';
-let activeDrawer  = null;
+let SCRIPT_URL    = '';
+let items         = [];
+let currentFilter = 'freezer';
+let activeModal   = null;   // { zone, drawer }
+let nextId        = 1;
 let toastTimer;
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  BOOT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 (function boot() {
   SCRIPT_URL = localStorage.getItem('fridge_script_url') || '';
   if (SCRIPT_URL) { showApp(); loadItems(); }
 })();
 
-function showApp()   { document.getElementById('setupScreen').style.display = 'none';  document.getElementById('mainApp').style.display = 'block'; }
-function showSetup() { document.getElementById('setupScreen').style.display = 'flex';  document.getElementById('mainApp').style.display = 'none';  }
+function showApp()   { document.getElementById('setupScreen').style.display='none';  document.getElementById('mainApp').style.display='block'; }
+function showSetup() { document.getElementById('setupScreen').style.display='flex';  document.getElementById('mainApp').style.display='none';  }
 
-// ═══════════════════════════════════════════════
-//  SETUP / CONNECT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
+//  SETUP
+// ═══════════════════════════════════════
 async function connectSheets() {
   const url = document.getElementById('cfgUrl').value.trim();
-  if (!url || !url.startsWith('https://script.google.com')) {
-    showSetupErr('That doesn\'t look like a valid Apps Script URL. It should start with https://script.google.com/macros/s/…');
-    return;
-  }
-  document.getElementById('connectLabel').innerHTML = '<span class="spinner"></span>Testing connection…';
+  if (!url.startsWith('https://script.google.com')) { showSetupErr('That doesn\'t look like a valid Apps Script URL.'); return; }
+  document.getElementById('connectLabel').innerHTML = '<span class="spinner"></span>Testing…';
   document.getElementById('setupErr').classList.remove('show');
-
   try {
-    const res  = await fetch(url, { redirect: 'follow' });
+    const res  = await fetch(url, { redirect:'follow' });
     const data = await res.json();
-    if (!Array.isArray(data)) throw new Error('unexpected response');
+    if (!Array.isArray(data)) throw new Error();
     SCRIPT_URL = url;
     localStorage.setItem('fridge_script_url', url);
-    showApp();
-    items = data.map(normalise);
-    renderAll();
-    setSyncState('ok');
+    items = data.map(norm);
+    computeNextId();
+    showApp(); renderAll(); setSyncState('ok');
   } catch(e) {
-    showSetupErr('Could not reach that URL — make sure you deployed with <strong>Anyone</strong> access and copied the full URL.');
+    showSetupErr('Could not connect — check the URL was deployed with <strong>Anyone</strong> access.');
     document.getElementById('connectLabel').textContent = 'Connect & Open Fridge ❄️';
   }
 }
 
 function showSetupErr(msg) {
   const el = document.getElementById('setupErr');
-  el.innerHTML = msg;
-  el.classList.add('show');
+  el.innerHTML = msg; el.classList.add('show');
   document.getElementById('connectLabel').textContent = 'Connect & Open Fridge ❄️';
 }
 
 function resetSetup() {
-  if (!confirm('This will disconnect from Google Sheets on this device. You can reconnect any time.')) return;
+  if (!confirm('Disconnect from Google Sheets on this device?')) return;
   localStorage.removeItem('fridge_script_url');
-  SCRIPT_URL = ''; items = [];
-  showSetup();
+  SCRIPT_URL=''; items=[]; showSetup();
 }
 
-// ═══════════════════════════════════════════════
-//  API CALLS
-// ═══════════════════════════════════════════════
-function normalise(r) {
-  return { id: String(r.id), name: r.name, category: r.category, zone: r.zone, drawer: r.drawer || null, qty: Number(r.qty) };
+// ═══════════════════════════════════════
+//  ID
+// ═══════════════════════════════════════
+function computeNextId() {
+  nextId = items.length ? Math.max(...items.map(i=>parseInt(i.id)||0)) + 1 : 1;
+}
+function getNextId() { return String(nextId++); }
+
+// ═══════════════════════════════════════
+//  API
+// ═══════════════════════════════════════
+function norm(r) {
+  return {
+    id:       String(r.id),
+    name:     r.name     || '',
+    category: r.category || 'freezer',
+    zone:     r.zone     || 'freezer',
+    position: r.position ? String(r.position) : '1',
+    qty:      Number(r.qty) || 1
+  };
 }
 
 async function apiGet() {
-  const res  = await fetch(SCRIPT_URL, { redirect: 'follow' });
-  const data = await res.json();
-  return data.map(normalise);
+  const res  = await fetch(SCRIPT_URL, { redirect:'follow' });
+  return (await res.json()).map(norm);
 }
 
 async function apiPost(payload) {
-  const res  = await fetch(SCRIPT_URL, { method:'POST', redirect:'follow', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-  return await res.json();
+  await fetch(SCRIPT_URL, {
+    method:'POST', redirect:'follow',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
 }
 
-// ═══════════════════════════════════════════════
-//  LOAD
-// ═══════════════════════════════════════════════
 async function loadItems() {
   setSyncState('loading');
   try {
     items = await apiGet();
-    setSyncState('ok');
-    renderAll();
-  } catch(e) {
-    setSyncState('error');
-  }
+    computeNextId();
+    setSyncState('ok'); renderAll();
+  } catch(e) { setSyncState('error'); }
 }
 
-function setSyncState(state) {
+function setSyncState(s) {
   const dot = document.getElementById('syncDot');
   const lbl = document.getElementById('syncLabel');
   dot.className = 'sync-dot';
-  if      (state === 'loading') { lbl.textContent = 'Syncing with Google Sheets…'; }
-  else if (state === 'ok')      { dot.classList.add('green');  lbl.textContent = 'Live — Google Sheets'; }
-  else                          { dot.classList.add('red');    lbl.textContent = 'Connection error — tap ↻'; }
+  if      (s==='loading') { lbl.textContent='Syncing with Google Sheets…'; }
+  else if (s==='ok')      { dot.classList.add('green');  lbl.textContent='Live — Google Sheets'; }
+  else                    { dot.classList.add('red');    lbl.textContent='Connection error — tap ↻'; }
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  RENDER
-// ═══════════════════════════════════════════════
-function em(cat) { return EMOJIS[cat] || EMOJIS.default; }
+// ═══════════════════════════════════════
+function em(cat) { return EMOJIS[cat]||EMOJIS.default; }
 
 function renderAll() {
-  renderUnit();
-  renderList(document.getElementById('searchBar') ? document.getElementById('searchBar').value : '');
-  renderStats();
+  renderUnit(); renderList(''); renderStats();
+  if (document.getElementById('searchBar'))
+    renderList(document.getElementById('searchBar').value);
 }
 
 function renderUnit() {
-  const fi = items.filter(i => i.zone === 'fridge'  && !i.drawer);
-  const fz = items.filter(i => i.zone === 'freezer' && !i.drawer);
-  document.getElementById('fridgeChips').innerHTML  = fi.length ? fi.map(chipHtml).join('') : '<span class="empty-msg">Nothing here yet…</span>';
-  document.getElementById('freezerChips').innerHTML = fz.length ? fz.map(chipHtml).join('') : '<span class="empty-msg">Freezer empty…</span>';
-  [1,2,3].forEach(n => {
-    document.getElementById(`d${n}c`).textContent = items.filter(i => String(i.drawer) === String(n)).length;
-  });
+  // Fridge shelves 1-4
+  for (let s=1; s<=4; s++) {
+    const el = document.getElementById(`f-s${s}`);
+    const sh = items.filter(i => i.zone==='fridge' && i.position===String(s));
+    el.innerHTML = sh.length ? sh.map(chipHtml).join('') : '<span class="empty-msg">empty</span>';
+  }
+  // Freezer drawers 1-3
+  for (let d=1; d<=3; d++) {
+    const el = document.getElementById(`fz-d${d}`);
+    el.textContent = items.filter(i => i.zone==='freezer' && i.position===String(d)).length;
+  }
 }
 
 function chipHtml(item) {
-  return `<div class="chip" onclick="quickEdit('${item.id}')">${em(item.category)} ${item.name}<span class="chip-qty">${item.qty}</span></div>`;
+  return `<div class="chip" onclick="openEdit('${item.id}')">${em(item.category)} ${item.name}<span class="chip-qty">${item.qty}</span></div>`;
 }
 
 function renderList(search) {
-  search = (search || '').toLowerCase();
+  search = (search||'').toLowerCase();
   let f = [...items];
-  if      (currentFilter === 'drawers') f = f.filter(i => i.drawer);
-  else if (currentFilter !== 'all')     f = f.filter(i => i.zone === currentFilter || i.category === currentFilter);
-  if (search) f = f.filter(i => i.name.toLowerCase().includes(search));
+  if      (currentFilter==='fridge')  f = f.filter(i=>i.zone==='fridge');
+  else if (currentFilter==='freezer') f = f.filter(i=>i.zone==='freezer');
+  if (search) f = f.filter(i=>i.name.toLowerCase().includes(search));
 
-  document.getElementById('lCount').textContent = f.length !== items.length ? `${f.length} of ${items.length}` : `${items.length} items`;
+  document.getElementById('lCount').textContent =
+    f.length !== items.length ? `${f.length} of ${items.length}` : `${items.length} items`;
   const el = document.getElementById('fullList');
-
-  if (!f.length) { el.innerHTML = '<div style="padding:20px;text-align:center;font-size:0.8rem;color:rgba(26,58,74,0.35)">Nothing found</div>'; return; }
+  if (!f.length) { el.innerHTML='<div style="padding:20px;text-align:center;font-size:0.8rem;color:rgba(26,58,74,0.35)">Nothing here</div>'; return; }
 
   el.innerHTML = f.map(item => {
-    const zone = item.zone.charAt(0).toUpperCase() + item.zone.slice(1);
-    const dr   = item.drawer ? ` · Drawer ${item.drawer}` : '';
+    const loc = item.zone==='fridge'
+      ? `Fridge · Shelf ${item.position}`
+      : `Freezer · Drawer ${item.position}`;
     return `<div class="list-item">
       <span class="li-icon">${em(item.category)}</span>
       <div class="li-info">
-        <div class="li-name">${item.name}</div>
-        <div class="li-meta"><span class="badge b-${item.category}">${item.category}</span>${zone}${dr}</div>
+        <div class="li-name">#${item.id} ${item.name}</div>
+        <div class="li-meta"><span class="badge b-${item.category}">${item.category}</span>${loc}</div>
       </div>
       <div class="li-actions">
         <button class="qbtn" onclick="adj('${item.id}',-1)">−</button>
         <span class="qval">${item.qty}</span>
         <button class="qbtn" onclick="adj('${item.id}',1)">+</button>
-        <button class="del-btn" onclick="del('${item.id}')">🗑</button>
+        <button class="edit-btn" onclick="openEdit('${item.id}')">✏️</button>
+        <button class="del-btn"  onclick="del('${item.id}')">🗑</button>
       </div>
     </div>`;
   }).join('');
@@ -531,130 +592,181 @@ function renderList(search) {
 
 function renderStats() {
   document.getElementById('sTotal').textContent   = items.length;
-  document.getElementById('sFridge').textContent  = items.filter(i => i.zone === 'fridge').length;
-  document.getElementById('sFreezer').textContent = items.filter(i => i.zone === 'freezer').length;
+  document.getElementById('sFridge').textContent  = items.filter(i=>i.zone==='fridge').length;
+  document.getElementById('sFreezer').textContent = items.filter(i=>i.zone==='freezer').length;
 }
 
-// ═══════════════════════════════════════════════
-//  ACTIONS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
+//  ADD FORM TOGGLE
+// ═══════════════════════════════════════
+function updateAddForm() {
+  const z = document.getElementById('iZone').value;
+  document.getElementById('addShelfRow').style.display  = z==='fridge'  ? 'flex' : 'none';
+  document.getElementById('addDrawerRow').style.display = z==='freezer' ? 'flex' : 'none';
+}
+
+function updateEditForm() {
+  const z = document.getElementById('eZone').value;
+  document.getElementById('eShelfRow').style.display  = z==='fridge'  ? 'flex' : 'none';
+  document.getElementById('eDrawerRow').style.display = z==='freezer' ? 'flex' : 'none';
+}
+
+// ═══════════════════════════════════════
+//  ADD
+// ═══════════════════════════════════════
 async function addItem() {
   const name = document.getElementById('iName').value.trim();
   if (!name) { toast('Please enter an item name'); return; }
+  const zone = document.getElementById('iZone').value;
+  const pos  = zone==='fridge'
+    ? document.getElementById('iShelf').value
+    : document.getElementById('iDrawer').value;
 
-  const newItem = {
-    id:       Date.now().toString(36) + Math.random().toString(36).slice(2,5),
+  const item = {
+    id:       getNextId(),
     name,
-    qty:      Math.max(1, parseInt(document.getElementById('iQty').value) || 1),
+    qty:      Math.max(1, parseInt(document.getElementById('iQty').value)||1),
     category: document.getElementById('iCat').value,
-    zone:     document.getElementById('iZone').value,
-    drawer:   document.getElementById('iDrawer').value || null
+    zone,
+    position: pos
   };
 
-  // Optimistic UI
-  items.push(newItem);
+  items.push(item);
   renderAll();
   document.getElementById('iName').value = '';
   document.getElementById('iQty').value  = 1;
-  toast(`${name} added ✓`);
+  toast(`${item.name} added (#${item.id}) ✓`);
 
   document.getElementById('addBtn').innerHTML = '<span class="spinner"></span>Saving…';
-  try {
-    await apiPost({ action:'add', ...newItem });
-  } catch(e) {
-    toast('Save failed — tap ↻ to refresh');
-  }
+  try { await apiPost({ action:'add', ...item }); }
+  catch(e) { toast('Save failed — tap ↻'); }
   document.getElementById('addBtn').textContent = 'Add to Fridge ❄️';
 }
 
+// ═══════════════════════════════════════
+//  QTY ADJUST
+// ═══════════════════════════════════════
 async function adj(id, delta) {
-  const item = items.find(i => i.id === id);
+  const item = items.find(i=>i.id===id);
   if (!item) return;
   const nq = item.qty + delta;
   if (nq <= 0) { del(id); return; }
   item.qty = nq;
   renderAll();
-  if (activeDrawer) renderDrawerModal(activeDrawer);
-  try { await apiPost({ action:'updateQty', id, qty: nq }); }
+  if (activeModal) renderDrawerContents(activeModal.zone, activeModal.num);
+  try { await apiPost({ action:'updateQty', id, qty:nq }); }
   catch(e) { toast('Sync error — tap ↻'); }
 }
 
+// ═══════════════════════════════════════
+//  DELETE
+// ═══════════════════════════════════════
 async function del(id) {
-  const item = items.find(i => i.id === id);
+  const item = items.find(i=>i.id===id);
   if (!item) return;
   if (!confirm(`Remove "${item.name}"?`)) return;
-  items = items.filter(i => i.id !== id);
+  items = items.filter(i=>i.id!==id);
   renderAll();
-  if (activeDrawer) renderDrawerModal(activeDrawer);
+  if (activeModal) renderDrawerContents(activeModal.zone, activeModal.num);
   toast(`${item.name} removed`);
   try { await apiPost({ action:'delete', id }); }
   catch(e) { toast('Delete sync failed — tap ↻'); }
 }
 
-async function quickEdit(id) {
-  const item = items.find(i => i.id === id);
+// ═══════════════════════════════════════
+//  EDIT
+// ═══════════════════════════════════════
+function openEdit(id) {
+  const item = items.find(i=>i.id===id);
   if (!item) return;
-  const v = prompt(`Quantity for "${item.name}":`, item.qty);
-  if (v === null) return;
-  const qty = parseInt(v);
-  if (isNaN(qty) || qty < 0) return;
-  if (qty === 0) { del(id); return; }
-  const old = item.qty;
-  item.qty = qty;
-  renderAll();
-  toast(`${item.name} → ${qty}`);
-  try { await apiPost({ action:'updateQty', id, qty }); }
-  catch(e) { item.qty = old; renderAll(); toast('Sync error — tap ↻'); }
+  document.getElementById('eId').value   = item.id;
+  document.getElementById('eName').value = item.name;
+  document.getElementById('eQty').value  = item.qty;
+  document.getElementById('eCat').value  = item.category;
+  document.getElementById('eZone').value = item.zone;
+  if (item.zone==='fridge') document.getElementById('eShelf').value  = item.position;
+  else                      document.getElementById('eDrawer').value = item.position;
+  updateEditForm();
+  document.getElementById('editOverlay').classList.add('open');
 }
 
+async function saveEdit() {
+  const id   = document.getElementById('eId').value;
+  const item = items.find(i=>i.id===id);
+  if (!item) return;
+  const zone = document.getElementById('eZone').value;
+  item.name     = document.getElementById('eName').value.trim() || item.name;
+  item.qty      = Math.max(1, parseInt(document.getElementById('eQty').value)||1);
+  item.category = document.getElementById('eCat').value;
+  item.zone     = zone;
+  item.position = zone==='fridge'
+    ? document.getElementById('eShelf').value
+    : document.getElementById('eDrawer').value;
+  closeOverlay('editOverlay');
+  renderAll();
+  toast(`${item.name} updated ✓`);
+  try { await apiPost({ action:'update', ...item }); }
+  catch(e) { toast('Sync error — tap ↻'); }
+}
+
+// ═══════════════════════════════════════
+//  FILTER TABS
+// ═══════════════════════════════════════
 function setFilter(f, el) {
   currentFilter = f;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderList(document.getElementById('searchBar').value);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  DRAWER MODAL
-// ═══════════════════════════════════════════════
-function openDrawer(n) {
-  activeDrawer = n;
-  document.getElementById('modalTitle').textContent = `📦 Drawer ${n} — ${DRAWER_NAMES[n]}`;
-  renderDrawerModal(n);
+// ═══════════════════════════════════════
+function openDrawerModal(zone, num) {
+  activeModal = { zone, num };
+  document.getElementById('drawerModalTitle').textContent =
+    zone==='freezer' ? `❄️ Freezer — Drawer ${num}` : `🥛 Fridge — Shelf ${num}`;
+  renderDrawerContents(zone, num);
   document.getElementById('drawerOverlay').classList.add('open');
 }
 
-function renderDrawerModal(n) {
-  const di   = items.filter(i => String(i.drawer) === String(n));
-  const body = document.getElementById('modalBody');
-  if (!di.length) { body.innerHTML = '<div class="modal-empty">This drawer is empty</div>'; return; }
-  body.innerHTML = di.map(item => `<div class="list-item">
+function renderDrawerContents(zone, num) {
+  const di   = items.filter(i=>i.zone===zone && i.position===String(num));
+  const body = document.getElementById('drawerModalBody');
+  if (!di.length) { body.innerHTML='<div class="modal-empty">Empty</div>'; return; }
+  body.innerHTML = di.map(item=>`<div class="list-item">
     <span class="li-icon">${em(item.category)}</span>
     <div class="li-info">
-      <div class="li-name">${item.name}</div>
+      <div class="li-name">#${item.id} ${item.name}</div>
       <div class="li-meta"><span class="badge b-${item.category}">${item.category}</span></div>
     </div>
     <div class="li-actions">
       <button class="qbtn" onclick="adj('${item.id}',-1)">−</button>
       <span class="qval">${item.qty}</span>
       <button class="qbtn" onclick="adj('${item.id}',1)">+</button>
-      <button class="del-btn" onclick="del('${item.id}')">🗑</button>
+      <button class="edit-btn" onclick="closeOverlay('drawerOverlay');openEdit('${item.id}')">✏️</button>
+      <button class="del-btn"  onclick="del('${item.id}')">🗑</button>
     </div>
   </div>`).join('');
 }
 
-function closeModal() { document.getElementById('drawerOverlay').classList.remove('open'); activeDrawer = null; }
-function maybeClose(e) { if (e.target === document.getElementById('drawerOverlay')) closeModal(); }
+// ═══════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('open');
+  if (id==='drawerOverlay') activeModal=null;
+}
+function maybeClose(e,id) { if(e.target===document.getElementById(id)) closeOverlay(id); }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  TOAST
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function toast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent=msg; el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2500);
 }
 </script>
 </body>
